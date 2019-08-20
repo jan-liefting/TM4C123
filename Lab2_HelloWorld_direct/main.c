@@ -21,24 +21,28 @@
 // blue LED connected to PF2 on the Launchpad
 // green LED connected to PF3 on the Launchpad
 
+// includes
+#include <stdint.h>
+#include <stdbool.h>
+#include "tm4c123gh6pm.h"
 // 1. Pre-processor Directives Section
 // Constant declarations to access port registers using
 // symbolic names instead of addresses
-#define GPIO_PORTF_DATA_R       (*((volatile unsigned long *)0x400253FC))
-#define GPIO_PORTF_DIR_R        (*((volatile unsigned long *)0x40025400))
-#define GPIO_PORTF_AFSEL_R      (*((volatile unsigned long *)0x40025420))
-#define GPIO_PORTF_PUR_R        (*((volatile unsigned long *)0x40025510))
-#define GPIO_PORTF_DEN_R        (*((volatile unsigned long *)0x4002551C))
-#define GPIO_PORTF_LOCK_R       (*((volatile unsigned long *)0x40025520))
-#define GPIO_PORTF_CR_R         (*((volatile unsigned long *)0x40025524))
-#define GPIO_PORTF_AMSEL_R      (*((volatile unsigned long *)0x40025528))
-#define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
-#define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
+//#define GPIO_PORTF_DATA_R       (*((volatile unsigned long *)0x400253FC))
+//#define GPIO_PORTF_DIR_R        (*((volatile unsigned long *)0x40025400))
+//#define GPIO_PORTF_AFSEL_R      (*((volatile unsigned long *)0x40025420))
+//#define GPIO_PORTF_PUR_R        (*((volatile unsigned long *)0x40025510))
+//#define GPIO_PORTF_DEN_R        (*((volatile unsigned long *)0x4002551C))
+//#define GPIO_PORTF_LOCK_R       (*((volatile unsigned long *)0x40025520))
+//#define GPIO_PORTF_CR_R         (*((volatile unsigned long *)0x40025524))
+//#define GPIO_PORTF_AMSEL_R      (*((volatile unsigned long *)0x40025528))
+//#define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
+//#define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
 
 // 2. Declarations Section
 //   Global Variables
-unsigned long In;  // input from PF4
-unsigned long Out; // outputs to PF3,PF2,PF1 (multicolor LED)
+uint32_t In;  // input from PF4
+uint32_t Out; // outputs to PF3,PF2,PF1 (multicolor LED)
 
 //   Function Prototypes
 void PortF_Init(void);
