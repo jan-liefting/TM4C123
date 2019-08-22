@@ -25,24 +25,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "tm4c123gh6pm.h"
-// 1. Pre-processor Directives Section
-// Constant declarations to access port registers using
-// symbolic names instead of addresses
-//#define GPIO_PORTF_DATA_R       (*((volatile unsigned long *)0x400253FC))
-//#define GPIO_PORTF_DIR_R        (*((volatile unsigned long *)0x40025400))
-//#define GPIO_PORTF_AFSEL_R      (*((volatile unsigned long *)0x40025420))
-//#define GPIO_PORTF_PUR_R        (*((volatile unsigned long *)0x40025510))
-//#define GPIO_PORTF_DEN_R        (*((volatile unsigned long *)0x4002551C))
-//#define GPIO_PORTF_LOCK_R       (*((volatile unsigned long *)0x40025520))
-//#define GPIO_PORTF_CR_R         (*((volatile unsigned long *)0x40025524))
-//#define GPIO_PORTF_AMSEL_R      (*((volatile unsigned long *)0x40025528))
-//#define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
-//#define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
 
-// 2. Declarations Section
+// defines
+#define PF4 ((*(GPIO_PORTF_DATA_BITS_R + (1 << 4))) >> 4)
 //   Global Variables
 uint32_t In;  // input from PF4
 uint32_t Out; // outputs to PF3,PF2,PF1 (multicolor LED)
+volatile uint32_t Test;
 
 //   Function Prototypes
 void PortF_Init(void);
@@ -54,9 +43,10 @@ void EnableInterrupts(void);
 // MAIN: Mandatory for a C Program to be executable
 int main(void){
   PortF_Init();        // Call initialization of port PF4 PF2
+  Test = PF4;
   while(1){
-        In = GPIO_PORTF_DATA_R&0x10; // read PF4 into In
-    if(In == 0x00){              // zero means SW1 is pressed
+//        GPIO_PORTF_DATA_R&0x10; // read PF4 into In
+    if(!PF4){              // zero means SW1 is pressed
       GPIO_PORTF_DATA_R = 0x08;  // LED is green
         } else{                      // 0x10 means SW1 is not pressed
       GPIO_PORTF_DATA_R = 0x02;  // LED is red
