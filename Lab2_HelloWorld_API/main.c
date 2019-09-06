@@ -26,37 +26,31 @@
 #include "sysctl.h"
 #include "hw_memmap.h"
 
-// defines
-#define PF4 ((*(GPIO_PORTF_DATA_BITS_R + (1 << 4))) >> 4)
+//  Defines
+
 //   Global Variables
-uint32_t In;  // input from PF4
-uint32_t Out; // outputs to PF3,PF2,PF1 (multicolor LED)
-volatile uint32_t Test;
 
 //   Function Prototypes
 void PortF_Init(void);
 void Delay(void);
-void EnableInterrupts(void);
 
 // 3. Subroutines Section
 // MAIN: Mandatory for a C Program to be executable
 int main(void)
 {
     PortF_Init();        // Call initialization of port PF0-4
-    Test = PF4;
     while (1)
     {
-        if (!PF4)
+        if (!GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4))
         {              // zero means SW1 is pressed
-            //GPIO_PORTF_DATA_R = 0x08;  // LED is green
-            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1 | GPIO_PIN_2 |GPIO_PIN_3, GPIO_PIN_3);
+            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_3);
         }
         else
         {                      // 0x10 means SW1 is not pressed
-            GPIO_PORTF_DATA_R = 0x02;  // LED is red
+            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_1);
         }
         Delay();                     // wait 0.1 sec
-        GPIO_PORTF_DATA_R = 0x04;    // LED is blue
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_2);
         Delay();                     // wait 0.1 sec
     }
 }
@@ -69,15 +63,12 @@ int main(void)
 // Notes: These five pins are connected to hardware on the LaunchPad
 void PortF_Init(void)
 {
-    volatile unsigned long delay;
     SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);  // 1) F enable
     while (!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF))
     {                                            // 2) wait for port F to be ready
     }
-
     GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY;  // 2) unlock PortF PF0
     GPIO_PORTF_CR_R = 0x1F;           // allow changes to PF4-0
-
     GPIOPinTypeGPIOInput(GPIO_PORTF_BASE, GPIO_PIN_4 | GPIO_PIN_0); // PF0, PF4 input
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 | GPIO_PIN_1); // PF3, PF2, PF1 output
     // enable pullup resistors on PF4,PF0
