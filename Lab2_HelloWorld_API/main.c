@@ -43,14 +43,14 @@ int main(void)
     {
         if (!GPIOPinRead(GPIO_PORTF_BASE, GPIO_PIN_4))
         {              // zero means SW1 is pressed
-            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_3);
+            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_3); // green LED
         }
         else
         {                      // 0x10 means SW1 is not pressed
-            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_1);
+            GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_1); // red LED
         }
         Delay();                     // wait 0.1 sec
-        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_2);
+        GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_3 | GPIO_PIN_2 |GPIO_PIN_1, GPIO_PIN_2); // blue LED
         Delay();                     // wait 0.1 sec
     }
 }

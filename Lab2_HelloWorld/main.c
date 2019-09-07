@@ -43,7 +43,6 @@ unsigned long Out; // outputs to PF3,PF2,PF1 (multicolor LED)
 //   Function Prototypes
 void PortF_Init(void);
 void Delay(void);
-void EnableInterrupts(void);
 
 
 // 3. Subroutines Section
