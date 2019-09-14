@@ -13,20 +13,23 @@
 // built-in connection: PF3 connected to green LED
 // built-in connection: PF4 connected to negative logic momentary switch, SW1
 
+// 1. Includes
+#include <stdint.h>
+#include <stdbool.h>
+#include "tm4c123gh6pm.h"
 #include "PLL.h"
+#include "hw_memmap.h"
+// test
+// hier wordt een unsigned long HEX getal eerst uitgerekend en daarna omgezet naar een pointer!
+#define SW1                     (*((volatile unsigned long *)(GPIO_PORTF_BASE + (0x10 << 2)))) //SW1 on PF4
+#define SW1_address             ((volatile unsigned long *)(GPIO_PORTF_BASE + (0x10 << 2)))
 
-#define GPIO_PORTF_DATA_R       (*((volatile unsigned long *)0x400253FC))
-#define GPIO_PORTF_DIR_R        (*((volatile unsigned long *)0x40025400))
-#define GPIO_PORTF_AFSEL_R      (*((volatile unsigned long *)0x40025420))
-#define GPIO_PORTF_PUR_R        (*((volatile unsigned long *)0x40025510))
-#define GPIO_PORTF_DEN_R        (*((volatile unsigned long *)0x4002551C))
-#define GPIO_PORTF_AMSEL_R      (*((volatile unsigned long *)0x40025528))
-#define GPIO_PORTF_PCTL_R       (*((volatile unsigned long *)0x4002552C))
-#define SYSCTL_RCGC2_R          (*((volatile unsigned long *)0x400FE108))
-#define SYSCTL_RCGC2_GPIOF      0x00000020  // port F Clock Gating Control
-#define GPIO_PORTF_DATA_BITS_R  ((volatile unsigned long *)0x40025000)
-#define SW1                     (*((volatile unsigned long *)(0x40025000 + (0x10 << 2)))) //SW1 on PF4
-#define Blue_LED                (*((volatile unsigned long *)(0x40025000 + (0x04 << 2)))) //blue LED on PF2
+#define Blue_LED                (*((volatile unsigned long *)(GPIO_PORTF_BASE + (0x04 << 2)))) //blue LED on PF2
+#define Blue_LED_address         ((volatile unsigned long *)(GPIO_PORTF_BASE + (0x04 << 2)))
+
+// hier is GPIO_PORTF_DATA_BITS_R al een pointer en vindt er pointer arithmetic plaats
+#define PF4                     ((*(GPIO_PORTF_DATA_BITS_R + (1 << 4))) >> 4)
+#define PF4_address             (GPIO_PORTF_DATA_BITS_R + (1 << 4))
 
 // function prototype
 void Init_PF(void);
@@ -39,6 +42,10 @@ void EnableInterrupts(void);  // Enable interrupts
 int main(void)
 {
     unsigned long volatile delay;
+    volatile unsigned long *sw1address = SW1_address;
+    volatile unsigned long *blueledaddress = Blue_LED_address;
+    volatile uint32_t *pf4address = PF4_address;
+
     PLL_Init(); // set system clock to 80 MHz
     // initialization goes here
     Init_PF();
@@ -81,13 +88,13 @@ void Delay100ms(unsigned long time)
 void Init_PF()
 {
     volatile unsigned long delay;
-    SYSCTL_RCGC2_R |= 0x00000020;      // 1) F clock
-    delay = SYSCTL_RCGC2_R;            // delay to allow clock to stabilize
-    GPIO_PORTF_AMSEL_R &= 0x00;        // 2) disable analog function
+    SYSCTL_RCGC2_R |= 0x00000020;   // 1) F clock
+    delay = SYSCTL_RCGC2_R;         // delay to allow clock to stabilize
+    GPIO_PORTF_AMSEL_R &= 0x00;     // 2) disable analog function
     GPIO_PORTF_PCTL_R &= ~0x000F0F00;   // 3) GPIO clear bit PCTL PF4 and PF2
-    GPIO_PORTF_DIR_R &= ~0x10;         // 4.1) PF4 input,
-    GPIO_PORTF_DIR_R |= 0x04;          // 4.2) PF2 output
-    GPIO_PORTF_AFSEL_R &= 0x00;        // 5) no alternate function
-    GPIO_PORTF_PUR_R |= 0x10; // 6) enable pullup resistor on PF4 (negative logic)
-    GPIO_PORTF_DEN_R |= 0x14;          // 7) enable digital pins PF4 and PF2
+    GPIO_PORTF_DIR_R &= ~0x10;      // 4.1) PF4 input,
+    GPIO_PORTF_DIR_R |= 0x04;       // 4.2) PF2 output
+    GPIO_PORTF_AFSEL_R &= 0x00;     // 5) no alternate function
+    GPIO_PORTF_PUR_R |= 0x10;       // 6) enable pullup resistor on PF4 (negative logic)
+    GPIO_PORTF_DEN_R |= 0x14;       // 7) enable digital pins PF4 and PF2
 }
