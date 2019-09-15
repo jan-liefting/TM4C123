@@ -24,7 +24,6 @@
 // hier wordt een unsigned long HEX getal eerst uitgerekend en daarna omgezet naar een pointer!
 #define SW1                     (*((volatile unsigned long *)(GPIO_PORTF_BASE + (0x10 << 2)))) //SW1 on PF4
 #define Blue_LED                (*((volatile unsigned long *)(GPIO_PORTF_BASE + (0x04 << 2)))) //blue LED on PF2
-#define PF4                     ((*(GPIO_PORTF_DATA_BITS_R + (1 << 4))) >> 4)
 
 // function prototype
 void Init_PF(void);
@@ -33,8 +32,8 @@ void Delay100ms(unsigned long);
 int main(void)
 {
     // initialization goes here
-    SysCtlClockSet(SYSCTL_SYSDIV_10 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN |
-    SYSCTL_XTAL_16MHZ); // set system clock to 80 MHz
+    SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ); // set system clock to 80 MHz
+    volatile uint32_t clock = SysCtlClockGet(); // get system clock
 
     Init_PF();
 
