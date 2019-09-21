@@ -12,7 +12,6 @@
 #include <stdio.h>   // standard C library
 #include "PLL.h"
 #include "UART.h"    // functions to implment input/output
-#include "TExaS.h"   // Lab grader functions
 
 // ***** 2. Global Declarations Section *****
 
@@ -24,9 +23,9 @@ int main(void)
 {
     unsigned long length, width, area;
 
-    // Initialize the UART PA0-1 and PLL 80 MHz
-    UART_Init();    // initialize UART for printing
+    // Initialize first the PLL and then the UART PA0-1
     PLL_Init();     // initialize the clock for 80 MHz
+    UART_Init();    // initialize UART for printing
 
     printf("\nThis program calculates areas of rectangular rooms.\n");
     while (1)
