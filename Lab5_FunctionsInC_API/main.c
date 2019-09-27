@@ -9,9 +9,18 @@
 //      January 15, 2016
 
 // ***** 1. Pre-processor Directives Section *****
-#include <stdio.h>   // standard C library
-#include "PLL.h"
-#include "UART.h"    // functions to implement input/output
+#include <stdint.h>
+#include <stdbool.h>
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
+#include "driverlib/debug.h"
+#include "driverlib/fpu.h"
+#include "driverlib/gpio.h"
+#include "driverlib/pin_map.h"
+#include "driverlib/rom.h"
+#include "driverlib/sysctl.h"
+#include "driverlib/uart.h"
+#include "utils/uartstdio.h"
 
 // ***** 2. Global Declarations Section *****
 
@@ -24,18 +33,16 @@ int main(void)
     unsigned long length, width, area;
 
     // Initialize first the PLL and then the UART PA0-1
-    PLL_Init();     // initialize the clock for 80 MHz
-    UART_Init();    // initialize UART for printing
 
-    printf("\nThis program calculates areas of rectangular rooms.\n");
+    UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
     while (1)
     {
-        printf("\nGive length: ");
-        scanf("%i", &length);  // Get input
-        printf("\nGive width: ");
-        scanf("%i", &width);   // Get input
-        area = Calc_Area(length, width);
-        printf("\nArea of the room = %i\n", area);
+        UARTprintf("\nGive length: ");
+        UARTscanf("%i", &length);  // Get input
+        UARTprintf("\nGive width: ");
+        UARTscanf("%i", &width);   // Get input
+        UARTarea = Calc_Area(length, width);
+        UARTprintf("\nArea of the room = %i\n", area);
     }
 }
 
