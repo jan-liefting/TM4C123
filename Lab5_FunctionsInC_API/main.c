@@ -25,7 +25,8 @@
 // ***** 2. Global Declarations Section *****
 
 // FUNCTION PROTOTYPES: Each subroutine defined
-unsigned long Calc_Area(unsigned long l, unsigned long w);
+unsigned long CalcArea(unsigned long l, unsigned long w);
+void ConfigureUART(void);
 
 // ***** 3. Subroutines Section *****
 int main(void)
@@ -33,16 +34,22 @@ int main(void)
     unsigned long length, width, area;
 
     // Initialize first the PLL and then the UART PA0-1
+    SysCtlClockSet(
+            SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN
+                    | SYSCTL_XTAL_16MHZ); // set system clock to 80 MHz
+    volatile uint32_t clock = SysCtlClockGet(); // get system clock
+    // Initialize UART
+    ConfigureUART();
 
-    UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
+    //UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
     while (1)
     {
-        UARTprintf("\nGive length: ");
-        UARTscanf("%i", &length);  // Get input
-        UARTprintf("\nGive width: ");
-        UARTscanf("%i", &width);   // Get input
-        UARTarea = Calc_Area(length, width);
-        UARTprintf("\nArea of the room = %i\n", area);
+        //UARTprintf("\nGive length: ");
+        //UARTscanf("%i", &length);  // Get input
+        //UARTprintf("\nGive width: ");
+        //UARTscanf("%i", &width);   // Get input
+        area = CalcArea(length, width);
+        //UARTprintf("\nArea of the room = %i\n", area);
     }
 }
 
@@ -54,7 +61,7 @@ int main(void)
 //    the width is less than 3,
 //    the length is greater than 20 or
 //    the width is greater than 20.
-unsigned long Calc_Area(unsigned long l, unsigned long w)
+unsigned long CalcArea(unsigned long l, unsigned long w)
 {
 //  unsigned long result;
 
@@ -65,4 +72,35 @@ unsigned long Calc_Area(unsigned long l, unsigned long w)
     }
 
     return (l * w);
+}
+
+void ConfigureUART(void)
+{
+    //
+    // Enable the GPIO Peripheral used by the UART.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+
+    //
+    // Enable UART0
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
+
+    //
+    // Configure GPIO Pins for UART mode.
+    //
+    GPIOPinConfigure(GPIO_PA0_U0RX);
+    GPIOPinConfigure(GPIO_PA1_U0TX);
+    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+
+    //
+    // Use the system clock as the UART clock source.
+    //
+    UARTClockSourceSet(UART0_BASE, UART_CLOCK_SYSTEM);
+    volatile int clock = UARTClockSourceGet(UART0_BASE);
+
+    //
+    // Initialize the UART for console I/O.
+    //
+    UARTStdioConfig(0, 115200, 16000000);
 }
