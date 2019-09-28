@@ -31,7 +31,7 @@ void ConfigureUART(void);
 // ***** 3. Subroutines Section *****
 int main(void)
 {
-    unsigned long length, width, area;
+    unsigned long length = 10, width = 5, area;
 
     // Initialize first the PLL and then the UART PA0-1
     SysCtlClockSet(
@@ -41,15 +41,15 @@ int main(void)
     // Initialize UART
     ConfigureUART();
 
-    //UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
+    UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
     while (1)
     {
-        //UARTprintf("\nGive length: ");
+        UARTprintf("\nGive length: ");
         //UARTscanf("%i", &length);  // Get input
-        //UARTprintf("\nGive width: ");
+        UARTprintf("\nGive width: ");
         //UARTscanf("%i", &width);   // Get input
         area = CalcArea(length, width);
-        //UARTprintf("\nArea of the room = %i\n", area);
+        UARTprintf("\nArea of the room = %i\n", area);
     }
 }
 
@@ -96,7 +96,7 @@ void ConfigureUART(void)
     //
     // Use the system clock as the UART clock source.
     //
-    UARTClockSourceSet(UART0_BASE, UART_CLOCK_SYSTEM);
+    UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
     volatile int clock = UARTClockSourceGet(UART0_BASE);
 
     //
