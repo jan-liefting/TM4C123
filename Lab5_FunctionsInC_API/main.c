@@ -37,8 +37,7 @@ int main(void)
 
     // Initialize first the PLL and then the UART PA0-1
     SysCtlClockSet(
-            SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN
-                    | SYSCTL_XTAL_16MHZ); // set system clock to 80 MHz and use the 16 MHz crystal
+    SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ); // set system clock to 80 MHz and use the 16 MHz crystal
     volatile uint32_t clock = SysCtlClockGet(); // get system clock
     // Initialize UART
     ConfigureUART();
@@ -48,11 +47,21 @@ int main(void)
     {
         UARTprintf("\nWhat is the width of the room?: ");
         UARTgets(string_buffer, 4);
-        UARTprintf("%s\n", string_buffer);
-        if(ConvertNumber(string_buffer, width)){
-
+        // UARTprintf("%s\n", string_buffer);
+        if (!ConvertNumber(string_buffer, &width))
+        {
+            UARTprintf("\nInvalid entry");
+            width = 0;
         }
-        //UARTscanf("%i", &width);   // Get input
+        UARTprintf("\nWhat is the length of the room?: ");
+        UARTgets(string_buffer, 4);
+        // UARTprintf("%s\n", string_buffer);
+        if (!ConvertNumber(string_buffer, &length))
+        {
+            UARTprintf("\nInvalid entry");
+            length = 0;
+        }
+
         area = CalcArea(length, width);
         UARTprintf("\nArea of the room = %i\n", area);
     }
@@ -124,16 +133,18 @@ void ConfigureUART(void)
 uint32_t ConvertNumber(char *s, uint32_t *l)
 {
     uint32_t result = 0;
-    while(*s <> '\0'){
+    while (*s != '\0')
+    {
         result *= 10;
         // test if in range
-        if(*s < '0' & *s > '9')
+        if (*s < '0' & *s > '9')
             return 0;
-        else{
+        else
+        {
             result += (*s - '0');
         }
 
-        s+=1; // next one
+        s += 1; // next one
     }
 
     *l = result;
