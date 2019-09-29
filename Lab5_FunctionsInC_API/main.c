@@ -32,6 +32,7 @@ void ConfigureUART(void);
 int main(void)
 {
     unsigned long length = 10, width = 5, area;
+    char string_buffer[10];
 
     // Initialize first the PLL and then the UART PA0-1
     SysCtlClockSet(
@@ -44,9 +45,9 @@ int main(void)
     UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
     while (1)
     {
-        UARTprintf("\nGive length: ");
-        //UARTscanf("%i", &length);  // Get input
-        UARTprintf("\nGive width: ");
+        UARTprintf("\nGive string: ");
+        UARTgets(string_buffer, 10);
+        UARTprintf("%s\n", string_buffer);
         //UARTscanf("%i", &width);   // Get input
         area = CalcArea(length, width);
         UARTprintf("\nArea of the room = %i\n", area);
