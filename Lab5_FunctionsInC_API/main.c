@@ -72,6 +72,7 @@ int main(void)
     }
 }
 
+//************************************************************************
 // Computes the Area of a rectangular room whose sides are given
 // Input:  the length (l) and width (w) are the dimensions of a rectangle
 // Output: the area of the rectangular room
@@ -91,6 +92,7 @@ uint32_t CalcArea(uint32_t l, uint32_t w)
     return (l * w);
 }
 
+//*************************************************************
 // Configures the UART on PA0 and PA1 to
 // use the COM port for transferring data to the PC
 // Input: n.a.
@@ -129,6 +131,7 @@ void ConfigureUART(void)
     UARTStdioConfig(0, 115200, 80000000);
 }
 
+//***************************************************************
 // Converts a string that represents a whole number
 // to a corresponding unsigned integer
 // Input: a string s that represents the number ending with \0
