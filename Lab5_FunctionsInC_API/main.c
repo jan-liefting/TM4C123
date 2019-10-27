@@ -8,6 +8,11 @@
 //      Jon Valvano and Ramesh Yerraballi
 //      January 15, 2016
 
+/*
+ * Add the include directory: C:\ti\TivaWare_C_Series-2.1.4.178
+ * And the library file: driverlib.lib that is found at: C:\ti\TivaWare_C_Series-2.1.4.178\driverlib\ccs\Debug
+ *
+ */
 // ***** 1. Pre-processor Directives Section *****
 #include <stdint.h>
 #include <stdbool.h>
