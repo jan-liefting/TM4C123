@@ -1,7 +1,7 @@
 ******************************************************************************
-                  TI ARM Linker PC v18.12.3                    
+                  TI ARM Linker Unix v18.12.3                  
 ******************************************************************************
->> Linked Thu Aug 22 20:48:03 2019
+>> Linked Sat Dec 28 16:53:57 2019
 
 OUTPUT FILE NAME:   <Lab2_HelloWorld_direct.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00000385
@@ -64,13 +64,13 @@ MODULE SUMMARY
 
        Module                         code   ro data   rw data
        ------                         ----   -------   -------
-    .\
+    ./
        tm4c123gh6pm_startup_ccs.obj   12     620       0      
        main.obj                       212    0         4      
     +--+------------------------------+------+---------+---------+
        Total:                         224    620       4      
                                                               
-    C:\ti\ccs910\ccs\tools\compiler\ti-cgt-arm_18.12.3.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
+    /home/jan/ti/ccs920/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS/lib/rtsv7M4_T_le_v4SPD16_eabi.lib
        autoinit.c.obj                 68     0         0      
        boot_cortex_m.c.obj            52     0         0      
        copy_zero_init.c.obj           28     0         0      

@@ -26,11 +26,11 @@
 #include "sysctl.h"
 #include "hw_memmap.h"
 
-//  Defines
+// Defines
 
-//   Global Variables
+// Global Variables
 
-//   Function Prototypes
+// Function Prototypes
 void PortF_Init(void);
 void Delay(void);
 

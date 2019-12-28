@@ -24,4 +24,10 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>TIVA</name>
+			<value>file:/home/jan/ti/tivaware_c_series_2_1_4_178</value>
+		</variable>
+	</variableList>
 </projectDescription>
