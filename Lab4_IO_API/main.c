@@ -28,7 +28,7 @@
 
 // 2. Declarations Section
 //   Global Variables
-unsigned long SW1;  // input from PF4,PF0
+unsigned long SW;  // input from PF4,PF0
 
 //   Function Prototypes
 void PortF_Init(void);
@@ -41,9 +41,9 @@ int main(void)
     PortF_Init();     // Call initialization of port PF4, PF3, PF2, PF1, PF0
     while (1)
     {
-        SW1 = GPIO_PORTF_DATA_R & 0x11 ^ 0x11; // read PF4 into SW1; toggle bit to reflect negative logic
+        SW = GPIO_PORTF_DATA_R & 0x11 ^ 0x11; // read PF4 into SW1; toggle bit to reflect negative logic
 
-        switch (SW1)
+        switch (SW)
         {
         case (0x00):
             GPIO_PORTF_DATA_R = 0x00;
