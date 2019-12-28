@@ -28,8 +28,7 @@
 
 // 2. Declarations Section
 //   Global Variables
-unsigned long SW1, SW2;  // input from PF4,PF0
-unsigned long Out;      // outputs to PF3,PF2,PF1 (multicolor LED)
+unsigned long SW1;  // input from PF4,PF0
 
 //   Function Prototypes
 void PortF_Init(void);
@@ -42,29 +41,22 @@ int main(void)
     PortF_Init();     // Call initialization of port PF4, PF3, PF2, PF1, PF0
     while (1)
     {
-        SW1 = !(GPIO_PORTF_DATA_R & 0x10);     // read PF4 into SW1
-        SW2 = !(GPIO_PORTF_DATA_R & 0x01);     // read PF0 into SW2
-        if (SW1 && SW2)
-        {                     // both pressed
-            GPIO_PORTF_DATA_R = 0x04;       // LED is blue
-        }
-        else
+        SW1 = GPIO_PORTF_DATA_R & 0x11 ^ 0x11; // read PF4 into SW1; toggle bit to reflect negative logic
+
+        switch (SW1)
         {
-            if (SW1 && (!SW2))
-            {                // just SW1 pressed
-                GPIO_PORTF_DATA_R = 0x02;     // LED is red
-            }
-            else
-            {
-                if ((!SW1) && SW2)
-                {              // just SW2 pressed
-                    GPIO_PORTF_DATA_R = 0x08;   // LED is green
-                }
-                else
-                {                        // neither switch
-                    GPIO_PORTF_DATA_R = 0x00;   // LED is off
-                }
-            }
+        case (0x00):
+            GPIO_PORTF_DATA_R = 0x00;
+            break; // neither are pressed; LED is off
+        case (0x01):
+            GPIO_PORTF_DATA_R = 0x08;
+            break; // SW2 pressed; LED is green
+        case (0x10):
+            GPIO_PORTF_DATA_R = 0x02;
+            break; // SW1 pressed; LED is red
+        case (0x11):
+            GPIO_PORTF_DATA_R = 0x04;
+            break; // both pressed; LED is blue
         }
     }
 }

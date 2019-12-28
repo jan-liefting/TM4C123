@@ -50,14 +50,23 @@ int main(void)
     PortF_Init();     // Call initialization of port PF4, PF3, PF2, PF1, PF0
     while (1)
     {
-        SW1 = GPIO_PORTF_DATA_R & 0x11 ^ 0x11;     // read PF4 into SW1; toggle bit to reflect negative logic
-        SW2 = GPIO_PORTF_DATA_R & 0x11 ^ 0x11;     // read PF0 into SW2; toggle bit to reflect negative logic
+        SW1 = GPIO_PORTF_DATA_R & 0x11 ^ 0x11; // read PF4 into SW1; toggle bit to reflect negative logic
+        SW2 = GPIO_PORTF_DATA_R & 0x11 ^ 0x11; // read PF0 into SW2; toggle bit to reflect negative logic
 
-        switch(SW1 | SW2){
-        case (0x00) : GPIO_PORTF_DATA_R = 0x00; break; // neither are pressed; LED is off
-        case (0x01) : GPIO_PORTF_DATA_R = 0x08; break; // SW2 pressed; LED is green
-        case (0x10) : GPIO_PORTF_DATA_R = 0x02; break; // SW1 pressed; LED is red
-        case (0x11) : GPIO_PORTF_DATA_R = 0x04; break; // both pressed; LED is blue
+        switch (SW1 | SW2)
+        {
+        case (0x00):
+            GPIO_PORTF_DATA_R = 0x00;
+            break; // neither are pressed; LED is off
+        case (0x01):
+            GPIO_PORTF_DATA_R = 0x08;
+            break; // SW2 pressed; LED is green
+        case (0x10):
+            GPIO_PORTF_DATA_R = 0x02;
+            break; // SW1 pressed; LED is red
+        case (0x11):
+            GPIO_PORTF_DATA_R = 0x04;
+            break; // both pressed; LED is blue
         }
 
 //        if (SW1 && SW2)
