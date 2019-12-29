@@ -41,7 +41,7 @@
 #define SP   0x20
 #define DEL  0x7F
 
-//------------UART_InChar------------
+//------------UART_Init------------
 // Wait for new serial port input
 // Initialize the UART for 115,200 baud rate (assuming 80 MHz clock),
 // 8 bit word length, no parity bits, one stop bit, FIFOs enabled

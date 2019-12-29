@@ -16,12 +16,12 @@
 // ***** 2. Global Declarations Section *****
 
 // FUNCTION PROTOTYPES: Each subroutine defined
-unsigned long Calc_Area(unsigned long l, unsigned long w);
+unsigned int Calc_Area(unsigned int l, unsigned int w);
 
 // ***** 3. Subroutines Section *****
 int main(void)
 {
-    unsigned long length, width, area;
+    unsigned int length, width, area;
 
     // Initialize first the PLL and then the UART PA0-1
     PLL_Init();     // initialize the clock for 80 MHz
@@ -47,7 +47,7 @@ int main(void)
 //    the width is less than 3,
 //    the length is greater than 20 or
 //    the width is greater than 20.
-unsigned long Calc_Area(unsigned long l, unsigned long w)
+unsigned int Calc_Area(unsigned int l, unsigned int w)
 {
 //  unsigned long result;
 
