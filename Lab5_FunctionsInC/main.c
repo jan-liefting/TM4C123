@@ -31,11 +31,11 @@ int main(void)
     while (1)
     {
         printf("\nGive length: ");
-        scanf("%i", &length);  // Get input
+        scanf("%u", &length);  // Get input
         printf("\nGive width: ");
-        scanf("%i", &width);   // Get input
+        scanf("%u", &width);   // Get input
         area = Calc_Area(length, width);
-        printf("\nArea of the room = %i\n", area);
+        printf("\nArea of the room = %u\n", area);
     }
 }
 
