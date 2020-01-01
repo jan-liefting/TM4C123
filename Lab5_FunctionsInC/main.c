@@ -15,6 +15,12 @@
 
 // ***** 2. Global Declarations Section *****
 
+/*
+ * Opmerking: er is een issue met de stdio functies printf en scanf
+ * Deze werken niet goed; daarom worden er geen getallen afgedrukt of ingelezen
+ *
+ */
+
 // FUNCTION PROTOTYPES: Each subroutine defined
 unsigned int Calc_Area(unsigned int l, unsigned int w);
 
