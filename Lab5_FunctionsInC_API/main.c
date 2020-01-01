@@ -9,29 +9,24 @@
 //      January 15, 2016
 
 /*
- * Add the include directory: C:\ti\TivaWare_C_Series-2.1.4.178
- * And the library file: driverlib.lib that is found at: C:\ti\TivaWare_C_Series-2.1.4.178\driverlib\ccs\Debug
+ * Add the include directory: ~\ti\TivaWare_C_Series-2.1.4.178
+ * And the library file: driverlib.lib that is found at: ~\ti\TivaWare_C_Series-2.1.4.178\driverlib\ccs\Debug
  *
  */
 // ***** 1. Pre-processor Directives Section *****
 #include <stdint.h>
 #include <stdbool.h>
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "driverlib/debug.h"
-#include "driverlib/fpu.h"
-#include "driverlib/gpio.h"
-#include "driverlib/pin_map.h"
-#include "driverlib/rom.h"
+
 #include "driverlib/sysctl.h"
-#include "driverlib/uart.h"
-#include "utils/uartstdio.h"
+
+//local include files
+#include "uartstdio.h"
+#include "configureuart0.h"
 
 // ***** 2. Global Declarations Section *****
 
 // FUNCTION PROTOTYPES: Each subroutine defined
 uint32_t CalcArea(uint32_t l, uint32_t w);
-void ConfigureUART(void);
 uint32_t ConvertNumber(char *s, uint32_t *l);
 
 // ***** 3. Subroutines Section *****
@@ -41,13 +36,15 @@ int main(void)
     char string_buffer[4];
 
     // Initialize first the PLL and then the UART PA0-1
-    SysCtlClockSet(
-    SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ); // set system clock to 80 MHz and use the 16 MHz crystal
+    // set system clock to 80 MHz and use the 16 MHz crystal
+    SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_OSC_MAIN | SYSCTL_XTAL_16MHZ);
     volatile uint32_t clock = SysCtlClockGet(); // get system clock
     // Initialize UART
-    ConfigureUART();
+    ConfigureUART0();
+    //Initialize UARTSTDIO package
+    UARTStdioConfig(0, 115200, 80000000);
 
-    UARTprintf("\nThis program calculates areas of rectangular rooms.\n");
+    UARTprintf("\nThis program calculates areas of rectangular rooms\n");
     while (1)
     {
         UARTprintf("\nWhat is the width of the room?: ");
@@ -90,45 +87,6 @@ uint32_t CalcArea(uint32_t l, uint32_t w)
     }
 
     return (l * w);
-}
-
-//*************************************************************
-// Configures the UART on PA0 and PA1 to
-// use the COM port for transferring data to the PC
-// Input: n.a.
-// Output: n.a.
-// Notes:
-// Sets the COM to:
-// 115200 bps, use 8 bit, no parity, and 1 stop bit
-void ConfigureUART(void)
-{
-    //
-    // Enable the GPIO Peripheral used by the UART.
-    //
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-
-    //
-    // Enable UART0
-    //
-    SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
-
-    //
-    // Configure GPIO Pins for UART mode.
-    //
-    GPIOPinConfigure(GPIO_PA0_U0RX);
-    GPIOPinConfigure(GPIO_PA1_U0TX);
-    GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-
-    //
-    // Use the system clock as the UART clock source.
-    // UART_CLOCK_PIOSC or UART_CLOCK_SYSTEM
-    UARTClockSourceSet(UART0_BASE, UART_CLOCK_SYSTEM);
-    volatile int clock = UARTClockSourceGet(UART0_BASE);
-
-    //
-    // Initialize the UART for console I/O.
-    // 16000000 or 80000000
-    UARTStdioConfig(0, 115200, 80000000);
 }
 
 //***************************************************************
