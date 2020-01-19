@@ -14,10 +14,10 @@
  *
  */
 // ***** 1. Pre-processor Directives Section *****
-#include <stdint.h>
-#include <stdbool.h>
+#include <stdint.h> // translates specific int-types to the corresponding C types
+#include <stdbool.h> // defines true and false
 
-#include "driverlib/sysctl.h"
+#include "driverlib/sysctl.h" // Prototypes for the system control driver.
 
 //local include files
 #include "uartstdio.h"
