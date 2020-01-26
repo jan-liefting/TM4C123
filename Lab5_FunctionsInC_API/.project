@@ -24,10 +24,17 @@
 		<nature>org.eclipse.cdt.core.ccnature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>driverlib.lib</name>
+			<type>1</type>
+			<locationURI>TIVA/driverlib/ccs/Debug/driverlib.lib</locationURI>
+		</link>
+	</linkedResources>
 	<variableList>
 		<variable>
 			<name>TIVA</name>
-			<value>file:/home/jan/ti/tivaware_c_series_2_1_4_178</value>
+			<value>file:/C:/home/jan/ti/tivaware_c_series-2.1.4.178</value>
 		</variable>
 	</variableList>
 </projectDescription>
