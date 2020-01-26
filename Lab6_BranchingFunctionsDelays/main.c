@@ -27,6 +27,8 @@
 #define SW1                     (*((volatile unsigned long *)(0x40025000 + (0x10 << 2)))) //SW1 on PF4
 #define Blue_LED                (*((volatile unsigned long *)(0x40025000 + (0x04 << 2)))) //blue LED on PF2
 
+//Includes
+#include "PLL.h"
 
 // function prototype
 void Init_PF(void);
@@ -35,13 +37,14 @@ void Delay100ms(unsigned long);
 int main(void){ unsigned long volatile delay;
   // initialization goes here
   Init_PF();
+  PLL_Init();
 
   Blue_LED = 0x04;                          // turn blue LED on PF2
     while(1){
     // body goes here
         if(!(SW1&0x10)) {                       // if SW is pressed (negative logic)
             Blue_LED ^= 0x04;                   // toggle Blue_LED
-            Delay100ms(4);                      // delay toggle
+            Delay100ms(1);                      // delay toggle
         }
         else
             Blue_LED = 0x04;                    // turn blue LED on PF2
